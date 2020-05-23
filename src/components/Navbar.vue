@@ -60,7 +60,10 @@ export default {
       { title: "Projects", icon: "mdi-folder", route: "/projects" },
       { title: "Admin", icon: "mdi-gavel", route: "/admin" }
     ]
-  })
+  }),
+  computed: {
+    
+  }
 };
 </script>
 
