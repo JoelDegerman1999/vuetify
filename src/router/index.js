@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Admin from '../views/Admin.vue'
-import Account from '../views/Account.vue'
+import Projects from '../views/Projects.vue'
 
 Vue.use(VueRouter)
 
@@ -17,9 +17,9 @@ Vue.use(VueRouter)
     name: 'Admin',
     component: Admin
   },{
-    path: '/account',
-    name: 'Account',
-    component: Account
+    path: '/projects',
+    name: 'Projects',
+    component: Projects
   },
 ]
 

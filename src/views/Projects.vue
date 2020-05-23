@@ -1,5 +1,5 @@
 <template>
   <v-container>
-    <h1>This is an account page</h1>
+    <h1>This is an project page</h1>
   </v-container>
 </template>
