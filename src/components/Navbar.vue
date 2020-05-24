@@ -13,20 +13,24 @@
         <v-btn text to="/projects">
           <v-icon left>mdi-folder</v-icon>Projects
         </v-btn>
-        <v-btn text to="/admin">
-          <v-icon left>mdi-gavel</v-icon>Admin
-        </v-btn>
       </v-toolbar-items>
-      <v-btn class="ml-5" color="secondary" @click="drawer = !drawer">Menu</v-btn>
+      <v-btn class="ml-5" color="secondary" @click="drawer = !drawer"
+        >Menu</v-btn
+      >
     </v-app-bar>
 
-    <v-navigation-drawer right app v-model="drawer" temporary>
+    <v-navigation-drawer
+      right
+      app
+      v-model="drawer"
+      temporary
+      class="grey lighten-3"
+    >
       <v-row class="mt-5">
         <v-col cols="6" offset="3">
-          <v-avatar size="100">
-            <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="alt" />
+          <v-avatar size="100" color="primary">
+            <span class="white--text headline">JD</span>
           </v-avatar>
-          <p class="subheading mb-0 mt-2">Joel Degerman</p>
         </v-col>
       </v-row>
       <v-list>
@@ -58,14 +62,10 @@ export default {
     items: [
       { title: "Dashboard", icon: "mdi-view-dashboard", route: "/" },
       { title: "Projects", icon: "mdi-folder", route: "/projects" },
-      { title: "Admin", icon: "mdi-gavel", route: "/admin" }
-    ]
+    ],
   }),
-  computed: {
-    
-  }
+  computed: {},
 };
 </script>
 
-<style>
-</style>
+<style></style>

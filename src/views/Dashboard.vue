@@ -5,27 +5,29 @@
         <h1 class>Projects</h1>
       </v-col>
     </v-row>
-    <ProjectCard :projects="getAllProjects"/>
+    <v-row v-for="project in getAllProjects" :key="project.title">
+      <v-col>
+        <ProjectCard :project="project" />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
-import ProjectCard from '@/components/ProjectCard'
+import ProjectCard from "@/components/ProjectCard";
 
 export default {
   name: "Dashboard",
   components: {
-    ProjectCard
+    ProjectCard,
   },
-  data: () => ({
-  }),
+  data: () => ({}),
   computed: {
     getAllProjects() {
-      return this.$store.state.projects
-    }
-  }
+      return this.$store.state.projects;
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

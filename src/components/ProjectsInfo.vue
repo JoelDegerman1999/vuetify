@@ -1,27 +1,92 @@
 <template>
-  <v-expansion-panels flat >
-    <v-expansion-panel>
-      <v-expansion-panel-header>
-        <ProjectCard :projects="getAllUserProjects" />
+  <v-expansion-panels>
+    <div class="headline" v-if="getAllOngoingProjects.length == 0">
+      No active projects
+    </div>
+    <v-expansion-panel
+      v-for="project in ongoingProjects
+        ? getAllOngoingProjects
+        : getAllCompletedProjects"
+      :key="project.title"
+      class="grey lighten-4 mb-2"
+    >
+      <v-expansion-panel-header class="primary white--text">
+        <!-- <ProjectCard :project="project" /> -->
+        <div class="title">{{ project.title }}</div>
       </v-expansion-panel-header>
-      <v-expansion-panel-content>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-expansion-panel-content>
+      <v-expansion-panel-content>
+        <v-card flat class="grey lighten-4">
+          <v-card-title>
+            <div class="subheading">Project Information</div>
+          </v-card-title>
+          <v-card-actions>
+            <v-row v-if="ongoingProjects" align="center">
+              <DeleteDialog :project="project" />
+              <v-spacer></v-spacer>
+              <v-btn text color="success" @click="completeProject(project)"
+                >Complete</v-btn
+              >
+            </v-row>
+            <v-row v-if="!ongoingProjects">
+              <v-spacer></v-spacer>
+              <v-btn text color="success" @click="makeActive(project)"
+                >Make active</v-btn
+              >
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
 </template>
 
 <script>
-import ProjectCard from "@/components/ProjectCard";
+// import ProjectCard from "@/components/ProjectCard";
+import DeleteDialog from "@/components/DeleteDialog";
 export default {
   components: {
-    ProjectCard
+    // ProjectCard,
+    DeleteDialog,
+  },
+  props: {
+    ongoingProjects: Boolean,
+  },
+  data: () => ({
+    items: ["ongoing", "complete", "overdue"],
+  }),
+  methods: {
+    completeProject(project) {
+      let payload = {
+        project: project,
+        status: "complete",
+      };
+      this.$store.commit("changeStatus", payload);
+    },
+    makeActive(project) {
+      let payload = {
+        project: project,
+        status: "ongoing",
+      };
+      this.$store.commit("changeStatus", payload);
+    },
+    deleteProject(project) {
+      this.$store.commit("deleteProject", project);
+    },
   },
   computed: {
-    getAllUserProjects() {
-      return this.$store.getters.getProjectsByUserName("Joel Degerman");
-    }
-  }
+    getAllOngoingProjects() {
+      console.log("hello");
+      return this.$store.getters.getUnCompletedProjectsByUsername(
+        "Joel Degerman"
+      );
+    },
+    getAllCompletedProjects() {
+      return this.$store.getters.getCompletedProjectsByUsername(
+        "Joel Degerman"
+      );
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

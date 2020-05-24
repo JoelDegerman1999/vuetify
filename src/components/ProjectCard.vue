@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-card
-      flat
-      v-for="project in projects"
-      :key="project.name"
-      :class="`project ${project.status}`"
-    >
+    <v-card flat :key="project.name" :class="`project ${project.status}`">
       <v-row wrap class="pa-3">
         <v-col cols="12" md="6">
           <div class="caption grey--text">Project title</div>
@@ -13,15 +8,15 @@
         </v-col>
         <v-col cols="6" sm="4" md="2">
           <div class="caption grey--text">Person</div>
-          <div>{{project.person}}</div>
+          <div>{{ project.person }}</div>
         </v-col>
         <v-col cols="6" sm="4" md="2">
           <div class="caption grey--text">Due by</div>
-          <div>{{project.due}}</div>
+          <div>{{ project.due }}</div>
         </v-col>
         <v-col cols="2" sm="4" md="2">
           <div class="caption grey--text">Status</div>
-          <div>{{project.status}}</div>
+          <div>{{ project.status }}</div>
         </v-col>
       </v-row>
       <v-divider></v-divider>
@@ -31,9 +26,9 @@
 
 <script>
 export default {
-    props: {
-        projects: Array
-    }
+  props: {
+    project: Object,
+  },
 };
 </script>
 
