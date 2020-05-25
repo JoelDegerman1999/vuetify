@@ -14,7 +14,7 @@
           <div class="caption grey--text">Due by</div>
           <div>{{ project.due }}</div>
         </v-col>
-        <v-col cols="2" sm="4" md="2">
+        <v-col cols="6" sm="4" md="2">
           <div class="caption grey--text">Status</div>
           <div>{{ project.status }}</div>
         </v-col>

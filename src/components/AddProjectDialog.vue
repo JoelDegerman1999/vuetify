@@ -4,7 +4,6 @@
       <template v-slot:activator="{ on }">
         <v-btn
           color="accent"
-          @click="reset"
           class="grey--text text--darken-4 darken-1"
           v-on="on"
           >Create project</v-btn
@@ -24,23 +23,41 @@
                     required
                     v-model="newProject.title"
                     :rules="titleRule"
+                    prepend-icon="mdi-clipboard-text-outline"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12">
-                  <v-text-field
+                <v-col cols="12" lg="6">
+                  <v-select
                     label="Person"
-                    required
+                    prepend-icon="mdi-account"
+                    :items="personSelect"
                     v-model="newProject.person"
-                    :rules="personRule"
-                  ></v-text-field>
+                  ></v-select>
                 </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Due by"
-                    required
-                    v-model="newProject.due"
-                    :rules="dueRule"
-                  ></v-text-field>
+                <v-col cols="12" lg="6">
+                  <v-menu
+                    transition="scale-transition"
+                    :close-on-content-click="false"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="newProject.due"
+                        label="Date"
+                        persistent-hint
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      reactive
+                      v-model="newProject.due"
+                      no-title
+                    ></v-date-picker>
+                  </v-menu>
                 </v-col>
               </v-row>
             </v-form>
@@ -49,20 +66,25 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
-            >Close</v-btn
-          >
+          <v-btn color="blue darken-1" text @click="reset">Close</v-btn>
           <v-btn color="blue darken-1" :disabled="!valid" text @click="validate"
             >Create</v-btn
           >
         </v-card-actions>
       </v-card>
+      <div class="text-center">
+        <Loader />
+      </div>
     </v-dialog>
   </v-row>
 </template>
 
 <script>
+import Loader from "../components/partials/_loader";
 export default {
+  components: {
+    Loader,
+  },
   data: () => ({
     dialog: false,
     newProject: {
@@ -75,18 +97,21 @@ export default {
     personRule: [(v) => !!v || "Person required"],
     dueRule: [(v) => !!v || "Due date required"],
     valid: true,
+    personSelect: ["Joel Degerman", "Helena Degerman"],
   }),
   methods: {
     addProject() {
-      this.dialog = false;
       this.newProject.status = "ongoing";
-      this.$store.commit("addProject", this.newProject);
+      this.$store.dispatch("addProject", this.newProject);
       this.newProject = {};
     },
     validate() {
       this.$refs.form.validate();
+      this.addProject();
+      this.reset();
     },
     reset() {
+      this.dialog = false;
       this.$refs.form.reset();
     },
   },

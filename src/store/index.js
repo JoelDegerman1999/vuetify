@@ -5,40 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    projects: [
-      {
-        title: "Design a new website",
-        person: "Joel Degerman",
-        due: "1st Jan 2019",
-        status: "ongoing",
-        content:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!",
-      },
-      {
-        title: "Code up the homepage",
-        person: "Chun Li",
-        due: "10th Jan 2019",
-        status: "complete",
-        content:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!",
-      },
-      {
-        title: "Design video thumbnails",
-        person: "Joel Degerman",
-        due: "20th Dec 2018",
-        status: "complete",
-        content:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!",
-      },
-      {
-        title: "Create a community forum",
-        person: "Gouken",
-        due: "20th Oct 2018",
-        status: "overdue",
-        content:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!",
-      },
-    ],
+    loader: false,
+    projects: [],
+    fetchUrl: "http://localhost:8080/",
   },
   getters: {
     getUnCompletedProjectsByUsername: (state) => (name) => {
@@ -70,6 +39,41 @@ export default new Vuex.Store({
       state.projects = state.projects.filter((p) => p != project);
     },
   },
-  actions: {},
+  actions: {
+    getAllProjects(context) {
+      fetch(`${context.state.fetchUrl}/projects`)
+        .then((response) => response.json())
+        .then((data) => {
+          context.state.projects = data._embedded.projects;
+        });
+    },
+    addProject(context, project) {
+      context.state.loader = true;
+      fetch(`${context.state.fetchUrl}/projects`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(project),
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          context.state.projects.push(data);
+          context.state.loader = false;
+        });
+    },
+    changeStatus(context, payload) {
+      payload.project.status = payload.status;
+      fetch(`${context.state.fetchUrl}/projects/${payload.project.id}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }).then(context.commit("changeStatus", payload));
+    },
+  },
   modules: {},
 });

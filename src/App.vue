@@ -1,9 +1,8 @@
 <template>
   <v-app>
-    <Navbar/>
-
+    <Navbar />
     <v-content class="grey lighten-4">
-        <router-view />
+      <router-view />
     </v-content>
   </v-app>
 </template>
@@ -14,9 +13,11 @@ export default {
   name: "App",
 
   components: {
-    Navbar
+    Navbar,
   },
-
-  data: () => ({})
+  beforeMount() {
+    this.$store.dispatch("getAllProjects");
+  },
+  data: () => ({}),
 };
 </script>

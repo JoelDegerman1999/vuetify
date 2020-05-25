@@ -1,12 +1,12 @@
 <template>
   <nav>
-    <v-app-bar flat app color="primary" dark>
+    <v-app-bar flat app dark>
       <v-toolbar-title>
         <span class="font-weight-light">Time</span>
         <span class="font-weight-bold">reporting</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items>
+      <v-toolbar-items class="hidden-sm-and-down">
         <v-btn text to="/">
           <v-icon left>mdi-view-dashboard</v-icon>Dashboard
         </v-btn>
@@ -68,4 +68,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@media screen and(min-width: 768px) {
+  .hidden-on-mobile {
+    display: none;
+  }
+}
+</style>

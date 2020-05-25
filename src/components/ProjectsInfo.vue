@@ -19,21 +19,7 @@
           <v-card-title>
             <div class="subheading">Project Information</div>
           </v-card-title>
-          <v-card-actions>
-            <v-row v-if="ongoingProjects" align="center">
-              <DeleteDialog :project="project" />
-              <v-spacer></v-spacer>
-              <v-btn text color="success" @click="completeProject(project)"
-                >Complete</v-btn
-              >
-            </v-row>
-            <v-row v-if="!ongoingProjects">
-              <v-spacer></v-spacer>
-              <v-btn text color="success" @click="makeActive(project)"
-                >Make active</v-btn
-              >
-            </v-row>
-          </v-card-actions>
+          <v-card-actions> </v-card-actions>
         </v-card>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -42,11 +28,11 @@
 
 <script>
 // import ProjectCard from "@/components/ProjectCard";
-import DeleteDialog from "@/components/DeleteDialog";
+// import DeleteDialog from "@/components/DeleteDialog";
 export default {
   components: {
     // ProjectCard,
-    DeleteDialog,
+    // DeleteDialog,
   },
   props: {
     ongoingProjects: Boolean,
@@ -60,14 +46,14 @@ export default {
         project: project,
         status: "complete",
       };
-      this.$store.commit("changeStatus", payload);
+      this.$store.dispatch("changeStatus", payload);
     },
     makeActive(project) {
       let payload = {
         project: project,
         status: "ongoing",
       };
-      this.$store.commit("changeStatus", payload);
+      this.$store.dispatch("changeStatus", payload);
     },
     deleteProject(project) {
       this.$store.commit("deleteProject", project);
@@ -75,7 +61,6 @@ export default {
   },
   computed: {
     getAllOngoingProjects() {
-      console.log("hello");
       return this.$store.getters.getUnCompletedProjectsByUsername(
         "Joel Degerman"
       );
